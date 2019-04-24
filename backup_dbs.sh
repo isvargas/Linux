@@ -9,7 +9,7 @@
 #  O arquivo segue o seguinte padrao:
 #     host:porta:banco:user:pass
 #  Podendo ter varias linhas no mesmo.
-#  o arquivo deve se chamar .pgpass, e estar no diretorio home do usuario.
+#  O arquivo deve se chamar .pgpass, e estar no diretorio home do usuario.
 #  Detalhe: este arquivo deve ser configurado com chmod 0600, impedindo assim que outros
 #  usuarios, alem de vc, tenham permissao de ler o conteudo e descobrir suas senhas :).
 #
