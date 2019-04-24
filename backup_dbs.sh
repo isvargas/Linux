@@ -28,7 +28,7 @@ SERVIDORES=("pgsql.server1.com" "pgsql.server2.com" "pgsql.server3.com")
 DATABASES=("server1" "server2" "server3")
 
 #realiza o backup
-for ((i=0; i< ${#SERVIDORES[*]}; i++)); do
+for ((i=0; i < ${#SERVIDORES[*]}; i++)); do
   echo "[+]Backupeando ${DATABASES[i]}"
   dest="${DATABASES[$i]}-$data.sql"
   pg_dump -h ${SERVIDORES[$i]} -p 5432 -U ${DATABASES[$i]} -F plain -f $dest ${DATABASES[$i]}
