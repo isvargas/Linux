@@ -13,6 +13,8 @@
 #   um diretorio chamado "Aplicativos", e dentro dele um dir para cada app.
 #2. Neste exemplo envio o arquivo para uma pasta chamada backup. Se ela nao existe, sera criada automaticamente.
 #3. O retorno do comando envio para out.txt. O dropbox retorna um JSON com as informacoes do upload.
+#---
+#Author: Ivan S. Vargas | ivan@is5.com.br
 if [ $# -lt 1 ];
 then
   echo "Especifique o nome do arquivo a ser enviado."
