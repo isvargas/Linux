@@ -27,11 +27,14 @@ SERVIDORES=("pgsql.server1.com" "pgsql.server2.com" "pgsql.server3.com")
 #bancos de dados
 DATABASES=("server1" "server2" "server3")
 
-#realiza o backup
+#realiza o backup (metadata e inserts)
+#para ignorar algum schema: --exclude-schema='esquema'
+#para ignorar dados de uma tabela: --exclude-table-data='tabela'
+#Obs: utilize uma declaracao para cada tabela ou esquema que for ignorar.
 for ((i=0; i < ${#SERVIDORES[*]}; i++)); do
   echo "[+]Backupeando ${DATABASES[i]}"
   dest="${DATABASES[$i]}-$data.sql"
-  pg_dump -h ${SERVIDORES[$i]} -p 5432 -U ${DATABASES[$i]} -F plain -f $dest ${DATABASES[$i]}
+  pg_dump -h ${SERVIDORES[$i]} -p 5432 -U ${DATABASES[$i]} -F plain --create --inserts --column-inserts -f $dest ${DATABASES[$i]}
 done
 
 #compacta arquivos
