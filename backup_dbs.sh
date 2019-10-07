@@ -1,6 +1,6 @@
 #!/bin/bash
 #Script para realizar o backup de varios banco de dados PostgreSQL e gravar em um arquivo ZIP.
-#O backup sera gerado no formato de scripts (create, insert).
+#O backup sera gerado no formato de scripts (create, insert) e em .tar.
 #Observacoes
 #1.O pg_dump, por padrao, vai pedir a senha do usuario para realizar a operacao, o que poderia
 #  quebrar a funcao desse script. Para resolver isso podemos configurar um arquivo na home do usuario
@@ -34,13 +34,18 @@ DATABASES=("server1" "server2" "server3")
 for ((i=0; i < ${#SERVIDORES[*]}; i++)); do
   echo "[+]Backupeando ${DATABASES[i]}"
   dest="${DATABASES[$i]}-$data.sql"
-  pg_dump -h ${SERVIDORES[$i]} -p 5432 -U ${DATABASES[$i]} -F plain --create --inserts --column-inserts -f $dest ${DATABASES[$i]}
+  destraw="${DATABASES[$i]}-$data.bkp"
+  #copia em formato de texto
+  pg_dump -h ${SERVIDORES[$i]} -p 5432 -U ${DATABASES[$i]} -F plain --create --inserts --column-inserts --exclude-schema='comum'  --exclude-schema='fiscal' --exclude-table-data='public.ci_sessions' --exclude-table-data='public.municipios'  -f $dest ${DATABASES[$i]}
+  #copia em formato binario
+  pg_dump -h ${SERVIDORES[$i]} -p 5432 -U ${DATABASES[$i]} -d ${DATABASES[$i]} --exclude-schema='comum' --exclude-schema='fiscal' --exclude-table-data='public.ci_sessions' --exclude-table-data='public.municipios' --format tar --file $destraw
 done
 
 #compacta arquivos
 echo "[+]Compactando arquivos"
 destzip="databases-$data.zip"
-zip $destzip *$data.sql
+zip $destzip *$data.sql *$data.bkp
+
 
 #concluido
 echo "[!]Concluido. Arquivo de backup: $destzip."
